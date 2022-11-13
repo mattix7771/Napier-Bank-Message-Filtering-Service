@@ -7,24 +7,35 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button x:Name="btn_send" Content="Send" HorizontalAlignment="Left" Margin="272,275,0,0" VerticalAlignment="Top" Height="46" Width="101" Click="btn_send_Click"/>
-        <TextBox x:Name="txt_messageSMS" HorizontalAlignment="Left" Margin="139,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="240" Height="109" TextChanged="txt_message_TextChanged" VerticalContentAlignment="Top" d:IsHidden="True"/>
-        <TextBox x:Name="txt_output" HorizontalAlignment="Left" Margin="483,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="222" Height="109"/>
-        <Label x:Name="lbl_phonenumber" Content="Phone Number" HorizontalAlignment="Left" Margin="15,98,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" FontWeight="Bold" Width="120" Height="26" VerticalContentAlignment="Center" d:IsHidden="True"/>
-        <TextBox x:Name="txt_phonenumber" HorizontalAlignment="Left" Margin="200,98,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" Height="26" VerticalContentAlignment="Center" KeyDown="txt_sender_KeyDown" d:IsHidden="True"/>
-        <Label x:Name="lbl_messageSMS" Content="Message" HorizontalAlignment="Left" Margin="15,138,0,0" VerticalAlignment="Top" Width="119" Height="26" HorizontalContentAlignment="Center" FontWeight="Bold" d:IsHidden="True"/>
-        <Label x:Name="lbl_subject" Content="Subject" HorizontalAlignment="Left" Margin="15,138,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" FontWeight="Bold" Width="119" Height="26" VerticalContentAlignment="Center" Visibility="Hidden" d:IsHidden="True"/>
-        <TextBox x:Name="txt_subject" HorizontalAlignment="Left" Margin="140,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="240" Height="26" VerticalContentAlignment="Center" Visibility="Hidden" d:IsHidden="True"/>
-        <Label x:Name="lbl_email" Content="Email" HorizontalAlignment="Left" Margin="15,98,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" FontWeight="Bold" Width="120" Height="26" VerticalContentAlignment="Center" d:IsHidden="True"/>
-        <TextBox x:Name="txt_email" HorizontalAlignment="Left" Margin="140,98,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="240" Height="26" VerticalContentAlignment="Center" KeyDown="txt_sender_KeyDown" d:IsHidden="True"/>
-        <Label x:Name="lbl_twitterID" Content="Twitter ID" HorizontalAlignment="Left" Margin="15,98,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" FontWeight="Bold" Width="120" Height="26" VerticalContentAlignment="Center" Visibility="Hidden" d:IsHidden="True"/>
-        <TextBox x:Name="txt_twitterID" HorizontalAlignment="Left" Margin="140,98,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="240" Height="26" VerticalContentAlignment="Center" KeyDown="txt_sender_KeyDown" Visibility="Hidden" d:IsHidden="True"/>
-        <TextBox x:Name="txt_messageTwitter" HorizontalAlignment="Left" Margin="139,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="240" Height="109" TextChanged="txt_message_TextChanged" VerticalContentAlignment="Top" d:IsHidden="True"/>
-        <Label x:Name="lbl_messageTwitter" Content="Message" HorizontalAlignment="Left" Margin="15,138,0,0" VerticalAlignment="Top" Width="119" Height="26" HorizontalContentAlignment="Center" FontWeight="Bold" d:IsHidden="True"/>
-        <TextBox x:Name="txt_messageEmail" HorizontalAlignment="Left" Margin="140,178,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="240" Height="109" TextChanged="txt_message_TextChanged" VerticalContentAlignment="Top" Visibility="Hidden" d:IsHidden="True"/>
-        <Label x:Name="lbl_messageEmail" Content="Message" HorizontalAlignment="Left" Margin="16,179,0,0" VerticalAlignment="Top" Width="119" Height="26" HorizontalContentAlignment="Center" FontWeight="Bold" Visibility="Hidden" d:IsHidden="True"/>
-        <ComboBox x:Name="cb_prefix" HorizontalAlignment="Left" Margin="140,98,0,0" VerticalAlignment="Top" Width="60" Height="26" Visibility="Hidden" d:IsHidden="True"/>
+        <Label x:Name="lbl_sender" Content="Sender" HorizontalAlignment="Left" Margin="236,32,0,0" VerticalAlignment="Top" Width="61" Height="26" HorizontalContentAlignment="Center" FontWeight="Bold" Visibility="Visible"/>
         <TextBox x:Name="txt_sender" HorizontalAlignment="Left" Margin="305,29,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" Height="38"/>
         <Button x:Name="btn_create" Content="Create" HorizontalAlignment="Left" Margin="465,72,0,0" VerticalAlignment="Top" Click="btn_create_Click"/>
+        <Label x:Name="lbl_preview" Content="Preview" HorizontalAlignment="Left" Margin="484,107,0,0" VerticalAlignment="Top" Width="61" Height="26" HorizontalContentAlignment="Center" FontWeight="Bold" Visibility="Visible"/>
+        <TextBox x:Name="txt_output" HorizontalAlignment="Left" Margin="484,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="221" Height="106"/>
+        <Button x:Name="btn_preview" Content="Preview" HorizontalAlignment="Left" Margin="330,348,0,0" VerticalAlignment="Top" Height="63" Width="110" Click="btn_preview_Click"/>
+        <Button x:Name="btn_send" Content="Send" HorizontalAlignment="Left" Margin="649,361,0,0" VerticalAlignment="Top" Height="46" Width="101" Click="btn_send_Click"/>
+        <Label x:Name="lbl_phonenumber" Content="Phone Number" HorizontalAlignment="Left" Margin="15,98,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" FontWeight="Bold" Width="120" Height="26" VerticalContentAlignment="Center" Visibility="Hidden"/>
+        <ComboBox x:Name="cb_prefix" HorizontalAlignment="Left" Margin="140,98,0,0" VerticalAlignment="Top" Width="60" Height="26" Visibility="Hidden"/>
+        <TextBox x:Name="txt_phonenumber" HorizontalAlignment="Left" Margin="200,98,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" Height="26" VerticalContentAlignment="Center" KeyDown="txt_sender_KeyDown" Visibility="Hidden"/>
+        <Label x:Name="lbl_messageSMS" Content="Message" HorizontalAlignment="Left" Margin="15,138,0,0" VerticalAlignment="Top" Width="119" Height="26" HorizontalContentAlignment="Center" FontWeight="Bold" Visibility="Hidden"/>
+        <TextBox x:Name="txt_messageSMS" HorizontalAlignment="Left" Margin="139,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="240" Height="109" TextChanged="txt_message_TextChanged" VerticalContentAlignment="Top" Visibility="Hidden"/>
+        <Label x:Name="lbl_email" Content="Email Address" HorizontalAlignment="Left" Margin="15,98,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" FontWeight="Bold" Width="120" Height="26" VerticalContentAlignment="Center" Visibility="Hidden"/>
+        <TextBox x:Name="txt_email" HorizontalAlignment="Left" Margin="140,98,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="240" Height="26" VerticalContentAlignment="Center" Visibility="Hidden"/>
+        <Label x:Name="lbl_subject" Content="Subject" HorizontalAlignment="Left" Margin="15,138,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" FontWeight="Bold" Width="119" Height="26" VerticalContentAlignment="Center" Visibility="Hidden"/>
+        <TextBox x:Name="txt_subject" HorizontalAlignment="Left" Margin="140,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="240" Height="26" VerticalContentAlignment="Center" Visibility="Hidden" KeyDown="txt_subject_KeyDown"/>
+        <Label x:Name="lbl_messageEmail" Content="Message" HorizontalAlignment="Left" Margin="16,179,0,0" VerticalAlignment="Top" Width="119" Height="26" HorizontalContentAlignment="Center" FontWeight="Bold" Visibility="Hidden"/>
+        <TextBox x:Name="txt_messageEmail" HorizontalAlignment="Left" Margin="140,178,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="240" Height="109" TextChanged="txt_message_TextChanged" VerticalContentAlignment="Top" Visibility="Hidden"/>
+        <Label x:Name="lbl_twitterID" Content="Twitter ID" HorizontalAlignment="Left" Margin="15,98,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" FontWeight="Bold" Width="120" Height="26" VerticalContentAlignment="Center" Visibility="Hidden"/>
+        <TextBox x:Name="txt_twitterID" HorizontalAlignment="Left" Margin="140,98,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="240" Height="26" VerticalContentAlignment="Center" Visibility="Hidden"/>
+        <Label x:Name="lbl_messageTwitter" Content="Message" HorizontalAlignment="Left" Margin="15,138,0,0" VerticalAlignment="Top" Width="119" Height="26" HorizontalContentAlignment="Center" FontWeight="Bold" Visibility="Hidden"/>
+        <TextBox x:Name="txt_messageTwitter" HorizontalAlignment="Left" Margin="139,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="240" Height="109" TextChanged="txt_message_TextChanged" VerticalContentAlignment="Top" Visibility="Hidden"/>
+        <CheckBox x:Name="check_SIR" Content="SIR" HorizontalAlignment="Left" Margin="140,74,0,0" VerticalAlignment="Top" Visibility="Hidden" Checked="check_SIR_Checked" Unchecked="check_SIR_Unchecked"/>
+        <ComboBox x:Name="SIR_year" HorizontalAlignment="Left" Margin="320,138,0,0" VerticalAlignment="Top" Width="60" Visibility="Hidden" Height="26"/>
+        <ComboBox x:Name="SIR_month" HorizontalAlignment="Left" Margin="260,138,0,0" VerticalAlignment="Top" Width="60" Visibility="Hidden" Height="26"/>
+        <ComboBox x:Name="SIR_day" HorizontalAlignment="Left" Margin="200,138,0,0" VerticalAlignment="Top" Width="60" Visibility="Hidden" Height="26"/>
+        <TextBox x:Name="txt_SIRSortCode" HorizontalAlignment="Left" Margin="140,178,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="240" Height="26" TextChanged="txt_message_TextChanged" VerticalContentAlignment="Top" Visibility="Hidden"/>
+        <Label x:Name="lbl_SIRSortCode" Content="Sort Code" HorizontalAlignment="Left" Margin="16,179,0,0" VerticalAlignment="Top" Width="119" Height="26" HorizontalContentAlignment="Center" FontWeight="Bold" Visibility="Hidden"/>
+        <Label x:Name="lbl_SIR_NOI" Content="Nature of Incident" HorizontalAlignment="Left" Margin="16,220,0,0" VerticalAlignment="Top" Width="119" Height="26" HorizontalContentAlignment="Center" FontWeight="Bold" Visibility="Hidden"/>
+        <ComboBox x:Name="cb_SIR_NOI" HorizontalAlignment="Left" Margin="140,219,0,0" VerticalAlignment="Top" Width="239" Height="26" Visibility="Hidden"/>
     </Grid>
 </Window>

@@ -24,33 +24,44 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
     {
         Random rand = new Random();
         Dictionary<String, String> textwords = new Dictionary<string, string>();
+        List<String> quarantined_URLS = new List<string>();
+        Dictionary<string, int> hashtags = new Dictionary<string, int>();
+        List<string> mentions = new List<string>();
 
         public MainWindow()
         {
             InitializeComponent();
+            Background = new SolidColorBrush(Color.FromRgb(171, 171, 171));
             InitializeDictionary();
             txt_output.IsReadOnly = true;
-            ComboboxInit();
+            ComponentsInit();
             Reset_layout();
         }
-
 
         private void btn_create_Click(object sender, RoutedEventArgs e)
         {
             if (txt_sender.Text.Contains("@"))
+            {
                 Email_layout();
+                txt_email.Text = txt_sender.Text;
+            }
             else if (int.TryParse(txt_sender.Text, out int value))
+            {
                 Sms_layout();
+                txt_phonenumber.Text = txt_sender.Text;
+            }
             else
+            {
                 Tweet_layout();
+                txt_twitterID.Text = txt_sender.Text;
+            }
+                
         }
 
 
-        private void txt_message_TextChanged(object sender, TextChangedEventArgs e)
-        {
-        }
+        private void txt_message_TextChanged(object sender, TextChangedEventArgs e){}
 
-        private void btn_send_Click(object sender, RoutedEventArgs e)
+        private void btn_preview_Click(object sender, RoutedEventArgs e)
         {
             //Create message id
             string id = "";
@@ -58,7 +69,7 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
             {
                 id += rand.Next(10);
             }
-
+            
             //Output text
             if (txt_messageSMS.Visibility == Visibility.Visible)
             {
@@ -67,6 +78,13 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
             }
             else if (txt_messageEmail.Visibility == Visibility.Visible)
             {
+                //Check that email contains "@" to assure it's an email address
+                if (!txt_email.Text.Contains("@"))
+                {
+                    MessageBox.Show("Invalid email, try again");
+                    return;
+                }
+
                 txt_output.Text = "E" + id + "\n";
                 Filter("E");
             }
@@ -108,26 +126,48 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
             }
         }
 
-        public void ComboboxInit()
+        public void ComponentsInit()
         {
+            //Phone prefix combobox initialisation
             String[] country_codes = File.ReadAllLines("country codes.txt");
             foreach (string code in country_codes)
             {
                 cb_prefix.Items.Add(code);
             }
             cb_prefix.SelectedItem = cb_prefix.Items.GetItemAt(0);
+
+            //Dates combobox intitialisation
+            for(int i = 1; i <= 31; i++)
+            {
+                SIR_day.Items.Add(i);
+            }
+
+            String[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+            for (int i = 0; i < months.Length; i++)
+            {
+                SIR_month.Items.Add(months[i]);
+            }
+
+            for (int i = 2022; i >= 1950; i--)
+            {
+                SIR_year.Items.Add(i);
+            }
+
+            //Nature of accident combobox initialisation
+            String[] NOI = { "Theft", "Staff Attack", "ATM Theft", "Raid", "Customer Attack", "Staff Abuse", "Bomb Threat", "Terrorism", "Suspicious Incident", "Intelligence", "Cash Loss" };
+            for (int i = 0; i < NOI.Length; i++)
+            {
+                cb_SIR_NOI.Items.Add(NOI[i]);
+            }
         }
 
         public void Filter(String type)
         {
-            if (type == "S" || type == "T")
+            if (type == "S")
             {
                 String body = "";
 
-                if (type == "S")
-                    body = txt_messageSMS.Text;
-                else if (type == "T")
-                    body = txt_messageTwitter.Text;
+                body = txt_messageSMS.Text;
 
                 foreach (KeyValuePair<string, string> entry in textwords)
                 {
@@ -136,6 +176,50 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
                         body = Regex.Replace(body, @"\b" + entry.Key + @"\b", entry.Key + "<" + entry.Value + ">", RegexOptions.IgnoreCase);
                     }
                 }
+                txt_output.Text += body;
+            }
+            else if(type == "E")
+            {
+                String body = txt_messageEmail.Text;
+
+                foreach (String x in body.Split(' '))
+                    if (Regex.IsMatch(x, @"\b\w*www|http|https\w*\b", RegexOptions.IgnoreCase))
+                    {
+                        body = Regex.Replace(body, x, "<URL Quarantined>");
+                        quarantined_URLS.Add(x);
+                    }
+                txt_output.Text += body;
+            }
+            else if(type == "T")
+            {
+                //Get text from textbox
+                String body = "";
+                body = txt_messageTwitter.Text;
+
+                //Check for abbreviations
+                foreach (KeyValuePair<string, string> entry in textwords)
+                {
+                    if (Regex.Match(body, @"\b" + entry.Key + @"\b", RegexOptions.IgnoreCase).Success)
+                    {
+                        body = Regex.Replace(body, @"\b" + entry.Key + @"\b", entry.Key + "<" + entry.Value + ">", RegexOptions.IgnoreCase);
+                    }
+                }
+
+                //Check for hashtags and mentions
+                foreach (String x in body.Split(' '))
+                {
+                    //Check for hashtags and add to dictionary
+                    if (Regex.IsMatch(x, "^#", RegexOptions.IgnoreCase))
+                        if (!hashtags.ContainsKey(x))
+                            hashtags.Add(x, 1);
+                        else
+                            hashtags[x]++;
+                    //Check for mentions and add to list
+                    if (Regex.IsMatch(x, "^@", RegexOptions.IgnoreCase))
+                        mentions.Add(x);
+                }
+
+                
                 txt_output.Text += body;
             }
         }
@@ -162,6 +246,7 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
             txt_subject.Visibility = Visibility.Visible;
             lbl_messageEmail.Visibility = Visibility.Visible;
             txt_messageEmail.Visibility = Visibility.Visible;
+            check_SIR.Visibility = Visibility.Visible;
 
             txt_subject.MaxLength = 20;
             txt_messageEmail.MaxLength = 1028;
@@ -198,6 +283,7 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
             lbl_messageTwitter.Visibility = Visibility.Hidden;
             txt_messageTwitter.Visibility = Visibility.Hidden;
             cb_prefix.Visibility = Visibility.Hidden;
+            check_SIR.Visibility = Visibility.Hidden;
         }
 
         private void txt_sender_KeyDown(object sender, KeyEventArgs e)
@@ -206,6 +292,54 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
                 e.Handled = false;
             else
                 e.Handled = true;
+        }
+
+        private void txt_subject_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (check_SIR.IsChecked == true)
+            {
+                if (Regex.IsMatch(e.Key.ToString(), "[0-9]"))
+                    e.Handled = false;
+                else
+                    e.Handled = true;
+            }
+        }
+
+        private void check_SIR_Checked(object sender, RoutedEventArgs e)
+        {
+            SIR_day.Visibility = Visibility.Visible;
+            SIR_month.Visibility = Visibility.Visible;
+            SIR_year.Visibility = Visibility.Visible;
+            lbl_SIRSortCode.Visibility = Visibility.Visible;
+            txt_SIRSortCode.Visibility = Visibility.Visible;
+            lbl_SIR_NOI.Visibility = Visibility.Visible;
+            cb_SIR_NOI.Visibility = Visibility.Visible;
+            txt_messageEmail.Margin = new Thickness(txt_messageEmail.Margin.Left, txt_messageEmail.Margin.Top + 80, txt_messageEmail.Margin.Right, txt_messageEmail.Margin.Bottom);
+            lbl_messageEmail.Margin = new Thickness(lbl_messageEmail.Margin.Left, lbl_messageEmail.Margin.Top + 80, lbl_messageEmail.Margin.Right, lbl_messageEmail.Margin.Bottom);
+            txt_subject.Width = 40;
+            txt_subject.IsReadOnly = true;
+            txt_subject.Text = "SIR ";
+        }
+
+        private void check_SIR_Unchecked(object sender, RoutedEventArgs e)
+        {
+            SIR_day.Visibility = Visibility.Hidden;
+            SIR_month.Visibility = Visibility.Hidden;
+            SIR_year.Visibility = Visibility.Hidden;
+            lbl_SIRSortCode.Visibility = Visibility.Hidden;
+            txt_SIRSortCode.Visibility = Visibility.Hidden;
+            lbl_SIR_NOI.Visibility = Visibility.Hidden;
+            cb_SIR_NOI.Visibility = Visibility.Hidden;
+            txt_messageEmail.Margin = new Thickness(txt_messageEmail.Margin.Left, txt_messageEmail.Margin.Top - 80, txt_messageEmail.Margin.Right, txt_messageEmail.Margin.Bottom);
+            lbl_messageEmail.Margin = new Thickness(lbl_messageEmail.Margin.Left, lbl_messageEmail.Margin.Top - 80, lbl_messageEmail.Margin.Right, lbl_messageEmail.Margin.Bottom);
+            txt_subject.Width = 240;
+            txt_subject.IsReadOnly = false;
+            txt_subject.Text = "";
+        }
+
+        private void btn_send_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
