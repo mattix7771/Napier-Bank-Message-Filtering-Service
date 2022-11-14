@@ -23,6 +23,7 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
     /// </summary>
     public partial class MainWindow : Window
     {
+        Message message;
         Random rand = new Random();
         Dictionary<String, String> textwords = new Dictionary<string, string>();
         List<String> quarantined_URLS = new List<string>();
@@ -64,17 +65,12 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
 
         private void btn_preview_Click(object sender, RoutedEventArgs e)
         {
-            //Create message id
-            string id = "";
-            for (int i = 0; i < 9; i++)
-            {
-                id += rand.Next(10);
-            }
-            
-            //Output text
+            txt_output.Text = "";
+
+            //Text preview
             if (txt_messageSMS.Visibility == Visibility.Visible)
             {
-                txt_output.Text = "S" + id + "\n" + "Sender: " + cb_prefix.Text.Substring(cb_prefix.Text.IndexOf('+') - 1) + " " + txt_phonenumber.Text + "\n";
+                txt_output.Text = "Sender: " + cb_prefix.Text.Substring(cb_prefix.Text.IndexOf('+') - 1) + " " + txt_phonenumber.Text + "\n";
                 Filter("S");
             }
             else if (txt_messageEmail.Visibility == Visibility.Visible)
@@ -86,12 +82,10 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
                     return;
                 }
 
-                txt_output.Text = "E" + id + "\n";
                 Filter("E");
             }
             else if (txt_messageTwitter.Visibility == Visibility.Visible)
             {
-                txt_output.Text = "T" + id + "\n";
                 Filter("T");
             }
         }
@@ -323,9 +317,33 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
             if (!File.Exists("messages.json"))
                 File.Create("messages.json");
 
-            Message msg = new Message('s', "der", "me", "hello");
-            msg.Sir_date = DateTime.Today;
-            File.AppendAllText("messages.json", JsonSerializer.Serialize(msg).ToString());
+            //Create message id
+            string id = "";
+            for (int i = 0; i < 9; i++)
+            {
+                id += rand.Next(10);
+            }
+
+            //Message object setup for JSON serialization
+            if (txt_messageSMS.Visibility == Visibility.Visible)
+            {
+                message = new Message('S', "S" + id, txt_phonenumber.Text, txt_output.Text);
+            }
+            else if (txt_messageEmail.Visibility == Visibility.Visible)
+            {
+                message = new Message('E', "E" + id, txt_email.Text, txt_output.Text);
+                message.Subject = txt_subject.Text;
+                message.Sir_date = SIR_date.DisplayDate;
+                message.Sort_code = txt_SIRSortCode.Text;
+                message.NOI = cb_SIR_NOI.Text;
+            }
+            else if (txt_messageTwitter.Visibility == Visibility.Visible)
+            {
+                message = new Message('S', "S" + id, txt_twitterID.Text, txt_output.Text);
+            }
+
+            //Add message object to JSON file
+            File.AppendAllText("messages.json", JsonSerializer.Serialize(message).ToString());
         }
     }
 }
