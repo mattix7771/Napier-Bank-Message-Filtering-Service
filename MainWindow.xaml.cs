@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Text.Json;
 
 namespace Napier_Bank_Message_Filtering_Service_NEW
 {
@@ -135,23 +136,6 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
                 cb_prefix.Items.Add(code);
             }
             cb_prefix.SelectedItem = cb_prefix.Items.GetItemAt(0);
-
-            //Dates combobox intitialisation
-            for(int i = 1; i <= 31; i++)
-            {
-                SIR_day.Items.Add(i);
-            }
-
-            String[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
-            for (int i = 0; i < months.Length; i++)
-            {
-                SIR_month.Items.Add(months[i]);
-            }
-
-            for (int i = 2022; i >= 1950; i--)
-            {
-                SIR_year.Items.Add(i);
-            }
 
             //Nature of accident combobox initialisation
             String[] NOI = { "Theft", "Staff Attack", "ATM Theft", "Raid", "Customer Attack", "Staff Abuse", "Bomb Threat", "Terrorism", "Suspicious Incident", "Intelligence", "Cash Loss" };
@@ -307,9 +291,7 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
 
         private void check_SIR_Checked(object sender, RoutedEventArgs e)
         {
-            SIR_day.Visibility = Visibility.Visible;
-            SIR_month.Visibility = Visibility.Visible;
-            SIR_year.Visibility = Visibility.Visible;
+            SIR_date.Visibility = Visibility.Visible;
             lbl_SIRSortCode.Visibility = Visibility.Visible;
             txt_SIRSortCode.Visibility = Visibility.Visible;
             lbl_SIR_NOI.Visibility = Visibility.Visible;
@@ -323,9 +305,7 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
 
         private void check_SIR_Unchecked(object sender, RoutedEventArgs e)
         {
-            SIR_day.Visibility = Visibility.Hidden;
-            SIR_month.Visibility = Visibility.Hidden;
-            SIR_year.Visibility = Visibility.Hidden;
+            SIR_date.Visibility = Visibility.Hidden;
             lbl_SIRSortCode.Visibility = Visibility.Hidden;
             txt_SIRSortCode.Visibility = Visibility.Hidden;
             lbl_SIR_NOI.Visibility = Visibility.Hidden;
@@ -339,7 +319,13 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
 
         private void btn_send_Click(object sender, RoutedEventArgs e)
         {
+            //Create JSON file
+            if (!File.Exists("messages.json"))
+                File.Create("messages.json");
 
+            Message msg = new Message('s', "der", "me", "hello");
+            msg.Sir_date = DateTime.Today;
+            File.AppendAllText("messages.json", JsonSerializer.Serialize(msg).ToString());
         }
     }
 }
