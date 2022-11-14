@@ -22,6 +22,7 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
         private string noi;
 
         public Message() { }
+        //Constructor for general messages
         public Message(char type, string id, string sender, string text)
         {
             this.type = type;
@@ -30,7 +31,20 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
             this.text = text;
         }
 
-        
+        //Constructor for SIR reports
+        public Message(char type, string id, string sender, string text, string subject, DateTime sir_date, string sort_code, string noi)
+        {
+            this.type = type;
+            this.id = id;
+            this.sender = sender;
+            this.text = text;
+            this.subject = subject;
+            this.sir_date = sir_date;
+            this.sort_code = sort_code;
+            this.noi = noi;
+        }
+
+
         public char Type {set { type = value; } get { return type; } }
         public string Id { set { id = value; } get { return id; } }
         public string Sender { set { sender = value; } get { return sender; } }

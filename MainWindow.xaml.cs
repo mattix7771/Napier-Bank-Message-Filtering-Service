@@ -29,6 +29,7 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
         List<String> quarantined_URLS = new List<string>();
         Dictionary<string, int> hashtags = new Dictionary<string, int>();
         List<string> mentions = new List<string>();
+        Message SIRReport;
 
         public MainWindow()
         {
@@ -139,8 +140,10 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
             }
         }
 
-        public void Filter(String type)
+        public void Filter(String type, bool send = false)
         {
+            txt_output.Text = "";
+
             if (type == "S")
             {
                 String body = "";
@@ -164,9 +167,15 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
                     if (Regex.IsMatch(x, @"\b\w*www|http|https\w*\b", RegexOptions.IgnoreCase))
                     {
                         body = Regex.Replace(body, x, "<URL Quarantined>");
-                        quarantined_URLS.Add(x);
+                        if (send)
+                        {
+                            quarantined_URLS.Add(x);
+                            if (check_SIR.IsChecked == true)
+                                SIRReport = (new Message('E', "E" + Create_ID(), txt_email.Text, txt_output.Text, txt_subject.Text, SIR_date.DisplayDate, txt_SIRSortCode.Text, cb_SIR_NOI.SelectedItem.ToString()));
+                        }
                     }
                 txt_output.Text += body;
+
             }
             else if(type == "T")
             {
@@ -187,17 +196,19 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
                 foreach (String x in body.Split(' '))
                 {
                     //Check for hashtags and add to dictionary
-                    if (Regex.IsMatch(x, "^#", RegexOptions.IgnoreCase))
-                        if (!hashtags.ContainsKey(x))
-                            hashtags.Add(x, 1);
-                        else
-                            hashtags[x]++;
-                    //Check for mentions and add to list
-                    if (Regex.IsMatch(x, "^@", RegexOptions.IgnoreCase))
-                        mentions.Add(x);
-                }
+                    if (send)
+                    {
+                        if (Regex.IsMatch(x, "^#", RegexOptions.IgnoreCase))
+                            if (!hashtags.ContainsKey(x))
+                                hashtags.Add(x, 1);
+                            else
+                                hashtags[x]++;
 
-                
+                        //Check for mentions and add to list
+                        if (Regex.IsMatch(x, "^@", RegexOptions.IgnoreCase))
+                            mentions.Add(x);
+                    }
+                }
                 txt_output.Text += body;
             }
         }
@@ -313,25 +324,51 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
 
         private void btn_send_Click(object sender, RoutedEventArgs e)
         {
+            //Populate statistics lists
+            Filter("E", true); Filter("T", true);
+
+            //Clear lists
+            lb_mentionList.Items.Clear();
+            lb_QuarantinedList.Items.Clear();
+            lb_TrendList.Items.Clear();
+
+            foreach (String x in quarantined_URLS)
+                lb_QuarantinedList.Items.Add(x);
+
+            foreach (String x in mentions)
+                lb_mentionList.Items.Add(x);
+
+            foreach (KeyValuePair<string, int> x in hashtags)
+                lb_TrendList.Items.Add(x);
+
+            if(SIRReport != null)
+                lb_SIRList.Items.Add("SIR ID: " + SIRReport.Id + "\n\t" + "Sender: " + SIRReport.Sender
+                                                                + "\n\t" + "Date: " + SIRReport.Sir_date
+                                                                + "\n\t" + "Sort code: " + SIRReport.Sort_code
+                                                                + "\n\t" + "Nature: " + SIRReport.NOI
+                                                                + "\n\t" + "Message: " + SIRReport.Text);
+
+
+
+            //hashtags mentions SIR
+
+            /*
             //Create JSON file
             if (!File.Exists("messages.json"))
                 File.Create("messages.json");
 
-            //Create message id
-            string id = "";
-            for (int i = 0; i < 9; i++)
-            {
-                id += rand.Next(10);
-            }
-
             //Message object setup for JSON serialization
             if (txt_messageSMS.Visibility == Visibility.Visible)
             {
-                message = new Message('S', "S" + id, txt_phonenumber.Text, txt_output.Text);
+                message = new Message('S', "S" + Create_ID(), txt_phonenumber.Text, txt_output.Text);
+            }
+            else if (txt_SIRSortCode.Visibility == Visibility.Visible)
+            {
+                message = SIRReport;
             }
             else if (txt_messageEmail.Visibility == Visibility.Visible)
             {
-                message = new Message('E', "E" + id, txt_email.Text, txt_output.Text);
+                message = new Message('E', "E" + Create_ID(), txt_email.Text, txt_output.Text);
                 message.Subject = txt_subject.Text;
                 message.Sir_date = SIR_date.DisplayDate;
                 message.Sort_code = txt_SIRSortCode.Text;
@@ -339,11 +376,27 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
             }
             else if (txt_messageTwitter.Visibility == Visibility.Visible)
             {
-                message = new Message('S', "S" + id, txt_twitterID.Text, txt_output.Text);
+                message = new Message('S', "S" + Create_ID(), txt_twitterID.Text, txt_output.Text);
             }
 
             //Add message object to JSON file
-            File.AppendAllText("messages.json", JsonSerializer.Serialize(message).ToString());
+            File.AppendAllText("messages.json", JsonSerializer.Serialize(message).ToString());*/
+        }
+
+        public String Create_ID()
+        {
+            //Create message id
+            string id = "";
+            for (int i = 0; i < 9; i++)
+            {
+                id += rand.Next(10);
+            }
+            return id;
+        }
+
+        private void txt_sender_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            check_SIR.IsChecked = false;
         }
     }
 }
