@@ -150,7 +150,8 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
 
         public void Filter(String type, bool send = false)
         {
-            txt_output.Text = "";
+            if(!send)
+                txt_output.Text = "";
 
             if (type == "S")
             {
@@ -165,7 +166,8 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
                         body = Regex.Replace(body, @"\b" + entry.Key + @"\b", entry.Key + "<" + entry.Value + ">", RegexOptions.IgnoreCase);
                     }
                 }
-                txt_output.Text += body;
+                if (!send)
+                    txt_output.Text += body;
             }
             else if(type == "E")
             {
@@ -182,7 +184,8 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
                                 SIRReport = (new Message('E', "E" + Create_ID(), txt_email.Text, txt_output.Text, txt_subject.Text, SIR_date.DisplayDate, txt_SIRSortCode.Text, cb_SIR_NOI.SelectedItem.ToString()));
                         }
                     }
-                txt_output.Text += body;
+                if (!send)
+                    txt_output.Text += body;
 
             }
             else if(type == "T")
@@ -217,7 +220,8 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
                             mentions.Add(x);
                     }
                 }
-                txt_output.Text += body;
+                if (!send)
+                    txt_output.Text += body;
             }
         }
 
@@ -366,7 +370,7 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
             //Message object setup for JSON serialization
             if (txt_messageSMS.Visibility == Visibility.Visible)
             {
-                message = new Message('S', "S" + Create_ID(), cb_prefix.Text.Substring(0, cb_prefix.Text.IndexOf("   ")) + txt_phonenumber.Text, txt_output.Text, null, DateTime.Now.Date, null, null);
+                message = new Message('S', "S" + Create_ID(), cb_prefix.Text.Substring(cb_prefix.Text.IndexOf("+")) + txt_phonenumber.Text, txt_output.Text, null, DateTime.Now.Date, null, null);
             }
             else if (txt_SIRSortCode.Visibility == Visibility.Visible)
             {
@@ -386,10 +390,12 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
             }
 
             //Add message object to JSON file
-            File.AppendAllText("messages.json", JsonSerializer.Serialize(message, new JsonSerializerOptions
+            var encoder_options = new JsonSerializerOptions
             {
-                Encoder = Encoding.UTF8
-            }));
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                WriteIndented = true
+            };
+            File.AppendAllText("messages.json", JsonSerializer.Serialize(message, encoder_options));
         }
 
         public String Create_ID()
