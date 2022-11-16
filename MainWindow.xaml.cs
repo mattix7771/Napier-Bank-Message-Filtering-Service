@@ -15,6 +15,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Text.Json;
+using System.Text.Unicode;
+using System.Text.Encodings.Web;
 
 namespace Napier_Bank_Message_Filtering_Service_NEW
 {
@@ -26,23 +28,28 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
         Message message;
         Random rand = new Random();
         Dictionary<String, String> textwords = new Dictionary<string, string>();
+        Dictionary<String, String> country_codes = new Dictionary<string, string>();
         List<String> quarantined_URLS = new List<string>();
         Dictionary<string, int> hashtags = new Dictionary<string, int>();
         List<string> mentions = new List<string>();
-        Message SIRReport;
+        Message SIRReport = new Message();
+        
 
         public MainWindow()
         {
+            FileRead();
             InitializeComponent();
             Background = new SolidColorBrush(Color.FromRgb(171, 171, 171));
             InitializeDictionary();
             txt_output.IsReadOnly = true;
             ComponentsInit();
             Reset_layout();
+            
         }
 
         private void btn_create_Click(object sender, RoutedEventArgs e)
         {
+            //Check what type of message it is and open elements accordingly
             if (txt_sender.Text.Contains("@"))
             {
                 Email_layout();
@@ -56,7 +63,7 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
             else
             {
                 Tweet_layout();
-                txt_twitterID.Text = txt_sender.Text;
+                txt_twitterID.Text = "@" + txt_sender.Text;
             }
                 
         }
@@ -125,10 +132,11 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
         public void ComponentsInit()
         {
             //Phone prefix combobox initialisation
-            String[] country_codes = File.ReadAllLines("country codes.txt");
-            foreach (string code in country_codes)
+            String[] country_codes_array = File.ReadAllLines("country codes.txt");
+            foreach (string code in country_codes_array)
             {
-                cb_prefix.Items.Add(code);
+                cb_prefix.Items.Add(code.ToString());
+                country_codes.Add(code.Substring(0, code.IndexOf("   ")).Trim(), code.Substring(code.IndexOf("   ")).Trim());
             }
             cb_prefix.SelectedItem = cb_prefix.Items.GetItemAt(0);
 
@@ -241,16 +249,14 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
             txt_messageEmail.MaxLength = 1028;
         }
 
+        //Layout for Tweet message
         public void Tweet_layout()
         {
+            //Make appropriate elements visible
             Reset_layout();
-            lbl_twitterID.Visibility = Visibility.Visible;
-            txt_twitterID.Visibility = Visibility.Visible;
-            lbl_messageTwitter.Visibility = Visibility.Visible;
-            txt_messageTwitter.Visibility = Visibility.Visible;
+            lbl_twitterID.Visibility = txt_twitterID.Visibility = lbl_messageTwitter.Visibility = txt_messageTwitter.Visibility = Visibility.Visible;
 
-
-            txt_twitterID.Text = "@";
+            //Set max txt lenghts
             txt_twitterID.MaxLength = 16;
             txt_messageTwitter.MaxLength = 140;
         }
@@ -352,7 +358,7 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
 
             //hashtags mentions SIR
 
-            /*
+            
             //Create JSON file
             if (!File.Exists("messages.json"))
                 File.Create("messages.json");
@@ -360,7 +366,7 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
             //Message object setup for JSON serialization
             if (txt_messageSMS.Visibility == Visibility.Visible)
             {
-                message = new Message('S', "S" + Create_ID(), txt_phonenumber.Text, txt_output.Text);
+                message = new Message('S', "S" + Create_ID(), cb_prefix.Text.Substring(0, cb_prefix.Text.IndexOf("   ")) + txt_phonenumber.Text, txt_output.Text, null, DateTime.Now.Date, null, null);
             }
             else if (txt_SIRSortCode.Visibility == Visibility.Visible)
             {
@@ -380,7 +386,10 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
             }
 
             //Add message object to JSON file
-            File.AppendAllText("messages.json", JsonSerializer.Serialize(message).ToString());*/
+            File.AppendAllText("messages.json", JsonSerializer.Serialize(message, new JsonSerializerOptions
+            {
+                Encoder = Encoding.UTF8
+            }));
         }
 
         public String Create_ID()
@@ -397,6 +406,21 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
         private void txt_sender_TextChanged(object sender, TextChangedEventArgs e)
         {
             check_SIR.IsChecked = false;
+        }
+
+        public void FileRead()
+        {
+            //Check if file exists and create it
+            if (!File.Exists("input.txt"))
+                File.Create("input.txt");
+
+            //If there are messages in the file check correct format and load
+            if(File.ReadAllText("input.txt") != "")
+            {
+
+            }
+
+
         }
     }
 }
