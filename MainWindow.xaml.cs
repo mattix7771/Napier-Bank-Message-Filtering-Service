@@ -37,7 +37,6 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
 
         public MainWindow()
         {
-            FileRead();
             InitializeComponent();
             Background = new SolidColorBrush(Color.FromRgb(171, 171, 171));
             InitializeDictionary();
@@ -146,6 +145,10 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
             {
                 cb_SIR_NOI.Items.Add(NOI[i]);
             }
+
+            //Check if input file exists and create it
+            if (!File.Exists("input.txt"))
+                File.Create("input.txt");
         }
 
         public void Filter(String type, bool send = false)
@@ -386,16 +389,10 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
             }
             else if (txt_messageTwitter.Visibility == Visibility.Visible)
             {
-                message = new Message('S', "S" + Create_ID(), txt_twitterID.Text, txt_output.Text);
+                message = new Message('T', "T" + Create_ID(), txt_twitterID.Text, txt_output.Text);
             }
 
-            //Add message object to JSON file
-            var encoder_options = new JsonSerializerOptions
-            {
-                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-                WriteIndented = true
-            };
-            File.AppendAllText("messages.json", JsonSerializer.Serialize(message, encoder_options));
+            JsonOutput();
         }
 
         public String Create_ID()
@@ -414,19 +411,52 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
             check_SIR.IsChecked = false;
         }
 
-        public void FileRead()
+        public void JsonOutput()
         {
-            //Check if file exists and create it
-            if (!File.Exists("input.txt"))
-                File.Create("input.txt");
-
-            //If there are messages in the file check correct format and load
-            if(File.ReadAllText("input.txt") != "")
+            //Add message object to JSON file
+            var encoder_options = new JsonSerializerOptions
             {
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                WriteIndented = true
+            };
+            File.AppendAllText("messages.json", JsonSerializer.Serialize(message, encoder_options));
+        }
 
+        private void btn_ReadFile_Click(object sender, RoutedEventArgs e)
+        {
+            //Check if there is data in file
+            if (File.ReadAllText("input.txt") == "")
+            {
+                MessageBox.Show("File is empty");
+                return;
             }
 
+            //If there are messages in the file check correct format and load
+            String[] text = File.ReadAllLines("input.txt");
 
+            foreach (String entry in text)
+            {
+                String[] line = entry.Split(';');
+
+                if (entry == "")
+                    return;
+
+                if (line[0].Contains('@') && line[0].Contains('.'))
+                {
+                    message = new Message('E', "E" + Create_ID(), line[0], line[1], line[2], DateTime.Now.Date, null, null);
+                    JsonOutput();
+                }
+                else if (Int64.TryParse(line[0].Substring(1), out long value))
+                {
+                    message = new Message('S', "S" + Create_ID(), line[0], line[1]);
+                    JsonOutput();
+                }
+                else
+                {
+                    message = new Message('T', "T" + Create_ID(), line[0], line[1]);
+                    JsonOutput();
+                }
+            }
         }
     }
 }

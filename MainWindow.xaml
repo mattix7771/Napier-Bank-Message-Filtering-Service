@@ -39,6 +39,7 @@
                     <Label x:Name="lbl_SIRSortCode" Content="Sort Code" HorizontalAlignment="Left" Margin="16,179,0,0" VerticalAlignment="Top" Width="119" Height="26" HorizontalContentAlignment="Center" FontWeight="Bold" Visibility="Hidden"/>
                     <Label x:Name="lbl_SIR_NOI" Content="Nature of Incident" HorizontalAlignment="Left" Margin="16,220,0,0" VerticalAlignment="Top" Width="119" Height="26" HorizontalContentAlignment="Center" FontWeight="Bold" Visibility="Hidden"/>
                     <ComboBox x:Name="cb_SIR_NOI" HorizontalAlignment="Left" Margin="140,219,0,0" VerticalAlignment="Top" Width="239" Height="26" Visibility="Hidden"/>
+                    <Button x:Name="btn_ReadFile" Content="Read File" HorizontalAlignment="Left" Margin="622,39,0,0" VerticalAlignment="Top" Click="btn_ReadFile_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Statistics">
