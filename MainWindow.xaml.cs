@@ -169,8 +169,7 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
                         body = Regex.Replace(body, @"\b" + entry.Key + @"\b", entry.Key + "<" + entry.Value + ">", RegexOptions.IgnoreCase);
                     }
                 }
-                if (!send)
-                    txt_output.Text += body;
+                txt_output.Text += body;
             }
             else if(type == "E")
             {
@@ -187,8 +186,7 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
                                 SIRReport = (new Message('E', "E" + Create_ID(), txt_email.Text, txt_output.Text, txt_subject.Text, SIR_date.DisplayDate, txt_SIRSortCode.Text, cb_SIR_NOI.SelectedItem.ToString()));
                         }
                     }
-                if (!send)
-                    txt_output.Text += body;
+                txt_output.Text += body;
 
             }
             else if(type == "T")
@@ -223,8 +221,7 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
                             mentions.Add(x);
                     }
                 }
-                if (!send)
-                    txt_output.Text += body;
+                txt_output.Text += body;
             }
         }
 
@@ -366,14 +363,13 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
             //hashtags mentions SIR
 
             
-            //Create JSON file
-            if (!File.Exists("messages.json"))
-                File.Create("messages.json");
+            
 
             //Message object setup for JSON serialization
             if (txt_messageSMS.Visibility == Visibility.Visible)
             {
                 message = new Message('S', "S" + Create_ID(), cb_prefix.Text.Substring(cb_prefix.Text.IndexOf("+")) + txt_phonenumber.Text, txt_output.Text, null, DateTime.Now.Date, null, null);
+                txt_output.Text = "";
             }
             else if (txt_SIRSortCode.Visibility == Visibility.Visible)
             {
@@ -386,10 +382,12 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
                 message.Sir_date = SIR_date.DisplayDate;
                 message.Sort_code = txt_SIRSortCode.Text;
                 message.NOI = cb_SIR_NOI.Text;
+                txt_output.Text = "";
             }
             else if (txt_messageTwitter.Visibility == Visibility.Visible)
             {
                 message = new Message('T', "T" + Create_ID(), txt_twitterID.Text, txt_output.Text);
+                txt_output.Text = "";
             }
 
             JsonOutput();
@@ -413,6 +411,10 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
 
         public void JsonOutput()
         {
+            //Create JSON file
+            if (!File.Exists("messages.json"))
+                File.Create("messages.json");
+
             //Add message object to JSON file
             var encoder_options = new JsonSerializerOptions
             {
@@ -443,7 +445,11 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
 
                 if (line[0].Contains('@') && line[0].Contains('.'))
                 {
-                    message = new Message('E', "E" + Create_ID(), line[0], line[1], line[2], DateTime.Now.Date, null, null);
+                    txt_messageEmail.Text = line[1];
+                    txt_subject.Text = line[2];
+                    Filter("E", true);
+                    message = new Message('E', "E" + Create_ID(), line[0], txt_output.Text, line[2], DateTime.Now.Date, null, null);
+                    txt_output.Text = "";
                     JsonOutput();
                 }
                 else if (Int64.TryParse(line[0].Substring(1), out long value))
