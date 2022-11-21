@@ -1,22 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Text.Json;
-using System.Text.Unicode;
-using System.Text.Encodings.Web;
 
 namespace Napier_Bank_Message_Filtering_Service_NEW
 {
@@ -25,14 +15,17 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
     /// </summary>
     public partial class MainWindow : Window
     {
-        Message message;
+        SMS SMS = new SMS();
+        EMAIL EMAIL = new EMAIL();
+        TWEET TWEET = new TWEET();
+        SIR SIRReport = new SIR();
         Random rand = new Random();
         Dictionary<String, String> textwords = new Dictionary<string, string>();
         Dictionary<String, String> country_codes = new Dictionary<string, string>();
         List<String> quarantined_URLS = new List<string>();
         Dictionary<string, int> hashtags = new Dictionary<string, int>();
         List<string> mentions = new List<string>();
-        Message SIRReport = new Message();
+        
         
 
         public MainWindow()
@@ -48,6 +41,10 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
 
         private void btn_create_Click(object sender, RoutedEventArgs e)
         {
+            //General string checks
+            if (CheckBoxErrorMessage(txt_sender) == false)
+                return;
+            
             //Check what type of message it is and open elements accordingly
             if (txt_sender.Text.Contains("@"))
             {
@@ -64,7 +61,6 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
                 Tweet_layout();
                 txt_twitterID.Text = "@" + txt_sender.Text;
             }
-                
         }
 
 
@@ -182,8 +178,8 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
                         if (send)
                         {
                             quarantined_URLS.Add(x);
-                            if (check_SIR.IsChecked == true)
-                                SIRReport = (new Message('E', "E" + Create_ID(), txt_email.Text, txt_output.Text, txt_subject.Text, SIR_date.DisplayDate, txt_SIRSortCode.Text, cb_SIR_NOI.SelectedItem.ToString()));
+                            //if (check_SIR.IsChecked == true)
+                            //    SIRReport = (new SIR('R', "R" + Create_ID(), txt_email.Text, txt_output.Text, txt_subject.Text, SIR_date.DisplayDate, txt_SIRSortCode.Text, cb_SIR_NOI.SelectedItem.ToString()));
                         }
                     }
                 txt_output.Text += body;
@@ -360,37 +356,30 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
 
 
 
-            //hashtags mentions SIR
-
-            
-            
-
             //Message object setup for JSON serialization
             if (txt_messageSMS.Visibility == Visibility.Visible)
             {
-                message = new Message('S', "S" + Create_ID(), cb_prefix.Text.Substring(cb_prefix.Text.IndexOf("+")) + txt_phonenumber.Text, txt_output.Text, null, DateTime.Now.Date, null, null);
+                SMS = new SMS('S', "S" + Create_ID(), cb_prefix.Text.Substring(cb_prefix.Text.IndexOf("+")) + txt_phonenumber.Text, txt_output.Text);
                 txt_output.Text = "";
+                JsonOutput(SMS.Type);
             }
             else if (txt_SIRSortCode.Visibility == Visibility.Visible)
             {
-                message = SIRReport;
+                SIRReport = new SIR('R', "R" + Create_ID(), txt_email.Text, txt_output.Text, txt_subject.Text, SIR_date.DisplayDate, txt_SIRSortCode.Text, cb_SIR_NOI.SelectedItem.ToString());
+                JsonOutput(SIRReport.Type);
             }
             else if (txt_messageEmail.Visibility == Visibility.Visible)
             {
-                message = new Message('E', "E" + Create_ID(), txt_email.Text, txt_output.Text);
-                message.Subject = txt_subject.Text;
-                message.Sir_date = SIR_date.DisplayDate;
-                message.Sort_code = txt_SIRSortCode.Text;
-                message.NOI = cb_SIR_NOI.Text;
+                EMAIL = new EMAIL('E', "E" + Create_ID(), txt_email.Text, txt_output.Text, txt_subject.Text);
                 txt_output.Text = "";
+                JsonOutput(EMAIL.Type);
             }
             else if (txt_messageTwitter.Visibility == Visibility.Visible)
             {
-                message = new Message('T', "T" + Create_ID(), txt_twitterID.Text, txt_output.Text);
+                TWEET = new TWEET('T', "T" + Create_ID(), txt_twitterID.Text, txt_output.Text);
                 txt_output.Text = "";
+                JsonOutput(TWEET.Type);
             }
-
-            JsonOutput();
         }
 
         public String Create_ID()
@@ -409,19 +398,31 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
             check_SIR.IsChecked = false;
         }
 
-        public void JsonOutput()
+        public void JsonOutput(char type)
         {
             //Create JSON file
             if (!File.Exists("messages.json"))
                 File.Create("messages.json");
 
-            //Add message object to JSON file
+            //Encoder options
             var encoder_options = new JsonSerializerOptions
             {
                 Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
                 WriteIndented = true
             };
-            File.AppendAllText("messages.json", JsonSerializer.Serialize(message, encoder_options));
+
+            //Add message object to JSON file
+            if(type == 'S')
+                File.AppendAllText("messages.json", JsonSerializer.Serialize(SMS, encoder_options));
+            else if (type == 'E')
+                File.AppendAllText("messages.json", JsonSerializer.Serialize(EMAIL, encoder_options));
+            else if (type == 'R')
+                File.AppendAllText("messages.json", JsonSerializer.Serialize(SIRReport, encoder_options));
+            else if (type == 'T')
+                File.AppendAllText("messages.json", JsonSerializer.Serialize(TWEET, encoder_options));
+
+
+
         }
 
         private void btn_ReadFile_Click(object sender, RoutedEventArgs e)
@@ -448,21 +449,46 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
                     txt_messageEmail.Text = line[1];
                     txt_subject.Text = line[2];
                     Filter("E", true);
-                    message = new Message('E', "E" + Create_ID(), line[0], txt_output.Text, line[2], DateTime.Now.Date, null, null);
+                    EMAIL = new EMAIL('E', "E" + Create_ID(), line[0], txt_output.Text, line[2]);
                     txt_output.Text = "";
-                    JsonOutput();
+                    JsonOutput(EMAIL.Type);
                 }
                 else if (Int64.TryParse(line[0].Substring(1), out long value))
                 {
-                    message = new Message('S', "S" + Create_ID(), line[0], line[1]);
-                    JsonOutput();
+                    SMS = new SMS('S', "S" + Create_ID(), line[0], line[1]);
+                    JsonOutput(SMS.Type);
                 }
                 else
                 {
-                    message = new Message('T', "T" + Create_ID(), line[0], line[1]);
-                    JsonOutput();
+                    TWEET = new TWEET('T', "T" + Create_ID(), line[0], line[1]);
+                    JsonOutput(TWEET.Type);
                 }
             }
+        }
+
+        //General string checks abd custom error message
+        public bool CheckBoxErrorMessage(TextBox textbox, string text = "")
+        {
+            //Custom message
+            if (text != "")
+            {
+                MessageBox.Show(text, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            //General string checks
+            if (textbox.Text == "")
+            {
+                MessageBox.Show(textbox.Name + " cannot be empty", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            else if (Regex.Match(textbox.Text, @"\s").Success)
+            {
+                MessageBox.Show(textbox.Name + " cannot contain spaces", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            return true;
+            
         }
     }
 }
