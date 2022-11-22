@@ -2,6 +2,15 @@
   "version": 3,
   "targets": {
     "net5.0-windows7.0": {
+      "Castle.Core/3.3.0": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Castle.Core.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Castle.Core.dll": {}
+        }
+      },
       "coverlet.collector/3.0.2": {
         "type": "package",
         "build": {
@@ -1616,6 +1625,18 @@
           "lib/netstandard1.3/System.Xml.XDocument.dll": {}
         }
       },
+      "TestStack.White/0.13.3": {
+        "type": "package",
+        "dependencies": {
+          "Castle.Core": "3.3.0"
+        },
+        "compile": {
+          "lib/net40/TestStack.White.dll": {}
+        },
+        "runtime": {
+          "lib/net40/TestStack.White.dll": {}
+        }
+      },
       "xunit/2.4.1": {
         "type": "package",
         "dependencies": {
@@ -1715,6 +1736,32 @@
     }
   },
   "libraries": {
+    "Castle.Core/3.3.0": {
+      "sha512": "wvlF47qlxKXurxSUWAnX79stVrnkuUPe5lHq26OiXUtMEngPaBcJ+5j+yVdFJ70hjUZpqg7qQK5hCZSex14ekQ==",
+      "type": "package",
+      "path": "castle.core/3.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "ASL - Apache Software Foundation License.txt",
+        "BreakingChanges.txt",
+        "Changes.txt",
+        "License.txt",
+        "castle.core.3.3.0.nupkg.sha512",
+        "castle.core.nuspec",
+        "lib/net35/Castle.Core.dll",
+        "lib/net35/Castle.Core.xml",
+        "lib/net40-client/Castle.Core.dll",
+        "lib/net40-client/Castle.Core.xml",
+        "lib/net45/Castle.Core.dll",
+        "lib/net45/Castle.Core.xml",
+        "lib/sl4/Castle.Core.dll",
+        "lib/sl4/Castle.Core.xml",
+        "lib/sl5/Castle.Core.dll",
+        "lib/sl5/Castle.Core.xml",
+        "readme.txt"
+      ]
+    },
     "coverlet.collector/3.0.2": {
       "sha512": "iBvPAIDaI7j/iMx/DzCGCJ3rdiOmel9VINEfaTiBv/NKIGHOP4X3hqc6Q1wgMtArEshlhXexQknP17SK4vXb1w==",
       "type": "package",
@@ -5873,6 +5920,24 @@
         "system.xml.xdocument.nuspec"
       ]
     },
+    "TestStack.White/0.13.3": {
+      "sha512": "AmeqJMLqc4YZE452vTUeS0HYR1KlqzWaifHXUkPlppvxEDWq559I7hmjZQ6QqV3SlA6Ej58UbXxa7X/HgqZTcg==",
+      "type": "package",
+      "path": "teststack.white/0.13.3",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net40/TestStack.White.dll",
+        "lib/net40/TestStack.White.pdb",
+        "lib/net40/TestStack.White.xml",
+        "readme.txt",
+        "teststack.white.0.13.3.nupkg.sha512",
+        "teststack.white.nuspec",
+        "tools/Init.ps1",
+        "tools/TestStack.White.psm1"
+      ]
+    },
     "xunit/2.4.1": {
       "sha512": "XNR3Yz9QTtec16O0aKcO6+baVNpXmOnPUxDkCY97J+8krUYxPvXT1szYYEUdKk4sB8GOI2YbAjRIOm8ZnXRfzQ==",
       "type": "package",
@@ -6018,6 +6083,7 @@
     "net5.0-windows7.0": [
       "Microsoft.NET.Test.Sdk >= 16.9.4",
       "Napier Bank Message Filtering Service NEW >= 1.0.0",
+      "TestStack.White >= 0.13.3",
       "coverlet.collector >= 3.0.2",
       "xunit >= 2.4.1",
       "xunit.runner.visualstudio >= 2.4.3"
@@ -6075,6 +6141,10 @@
             "target": "Package",
             "version": "[16.9.4, )"
           },
+          "TestStack.White": {
+            "target": "Package",
+            "version": "[0.13.3, )"
+          },
           "coverlet.collector": {
             "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
             "suppressParent": "All",
@@ -6110,5 +6180,27 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.408\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Castle.Core 3.3.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0-windows7.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Castle.Core",
+      "targetGraphs": [
+        "net5.0-windows7.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'TestStack.White 0.13.3' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework 'net5.0-windows7.0'. This package may not be fully compatible with your project.",
+      "libraryId": "TestStack.White",
+      "targetGraphs": [
+        "net5.0-windows7.0"
+      ]
+    }
+  ]
 }

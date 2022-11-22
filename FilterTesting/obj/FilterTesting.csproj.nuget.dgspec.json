@@ -123,6 +123,10 @@
               "target": "Package",
               "version": "[16.9.4, )"
             },
+            "TestStack.White": {
+              "target": "Package",
+              "version": "[0.13.3, )"
+            },
             "coverlet.collector": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
