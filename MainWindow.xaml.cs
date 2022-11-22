@@ -7,6 +7,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Text.Json;
+using System;
+using System.Linq;
+using Napier_Bank_Message_Filtering_Service_NEW.Properties;
+using Napier_Bank_Message_Filtering_Service_NEW.Resources;
 
 namespace Napier_Bank_Message_Filtering_Service_NEW
 {
@@ -63,9 +67,6 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
             }
         }
 
-
-        private void txt_message_TextChanged(object sender, TextChangedEventArgs e){}
-
         private void btn_preview_Click(object sender, RoutedEventArgs e)
         {
             txt_output.Text = "";
@@ -96,38 +97,26 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
         public void InitializeDictionary()
         {
             //Extract abbreviations from file
-            String[] temp_text = File.ReadAllLines("textwords.csv");
-            List<String> text = new List<string>();
 
-            //Devide text into individual items
-            for (int i = 0; i < temp_text.Length; i++)
-            {
-                String line = temp_text[i];
-                if (line.Contains("\""))
-                {
-                    String[] temp = line.Split('"');
-                    text.Add(temp[0]);
-                    text.Add(temp[1]);
-                }
-                else
-                {
-                    String[] temp = line.Split(',');
-                    text.Add(temp[0]);
-                    text.Add(temp[1]);
-                }
-            }
+            //C
+            string[] data = Data.textwords.Split("\n");
 
-            //Add items to dictionary
-            for (int i = 0; i < text.Count; i += 2)
+            foreach (var line in data)
             {
-                textwords.Add(text[i], text[i + 1]);
+                if (string.IsNullOrEmpty(line)) continue;
+                //string currentSplit = line);
+                string abbreviation = line.Substring(0, line.IndexOf(","));
+                string phrase = line.Substring(line.IndexOf(",") + 1);
+                Console.WriteLine("" +  abbreviation + " " +  phrase);
+
+                textwords.Add(abbreviation, phrase);
             }
         }
 
         public void ComponentsInit()
         {
             //Phone prefix combobox initialisation
-            String[] country_codes_array = File.ReadAllLines("country codes.txt");
+            string[] country_codes_array = Data.country_codes.Split("\n");
             foreach (string code in country_codes_array)
             {
                 cb_prefix.Items.Add(code.ToString());
@@ -165,6 +154,7 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
                         body = Regex.Replace(body, @"\b" + entry.Key + @"\b", entry.Key + "<" + entry.Value + ">", RegexOptions.IgnoreCase);
                     }
                 }
+
                 txt_output.Text += body;
             }
             else if(type == "E")
@@ -489,6 +479,21 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
 
             return true;
             
+        }
+
+        private void txt_messageSMS_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Filter("S");
+        }
+
+        private void txt_messageEmail_TextChanged(object sender, TextChangedEventArgs e) 
+        {
+            Filter("E");
+        }
+
+        private void txt_messageTwitter_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Filter("T");
         }
     }
 }
