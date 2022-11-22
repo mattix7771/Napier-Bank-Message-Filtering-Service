@@ -1,10 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "vqchR90IhC7Abd5iU51AFQ3mLnBIFUyGE/+unr9S2dUEAAtV/hmRH+EyL7Rmc9LQtdPO4AFuuO1wn/p+slYZGA==",
+  "dgSpecHash": "lkQhYSElUqbLCIktepb5R35NTEwolKGhwvoTLzoU/AOy33kixC7ihLo09Tda3m57fkqp5N9sv+523Col4yXGQQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\matti\\OneDrive\\Napier\\S3 - Software Engineering\\Napier Bank Message Filtering Service NEW\\FilterTesting\\FilterTesting.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\matti\\.nuget\\packages\\coverlet.collector\\3.0.2\\coverlet.collector.3.0.2.nupkg.sha512",
+    "C:\\Users\\matti\\.nuget\\packages\\materialdesigncolors\\2.0.9\\materialdesigncolors.2.0.9.nupkg.sha512",
+    "C:\\Users\\matti\\.nuget\\packages\\materialdesignthemes\\4.6.1\\materialdesignthemes.4.6.1.nupkg.sha512",
     "C:\\Users\\matti\\.nuget\\packages\\microsoft.codecoverage\\16.9.4\\microsoft.codecoverage.16.9.4.nupkg.sha512",
     "C:\\Users\\matti\\.nuget\\packages\\microsoft.csharp\\4.0.1\\microsoft.csharp.4.0.1.nupkg.sha512",
     "C:\\Users\\matti\\.nuget\\packages\\microsoft.net.test.sdk\\16.9.4\\microsoft.net.test.sdk.16.9.4.nupkg.sha512",
