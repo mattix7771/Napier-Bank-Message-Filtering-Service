@@ -11,6 +11,7 @@ using System;
 using System.Linq;
 using Napier_Bank_Message_Filtering_Service_NEW.Properties;
 using Napier_Bank_Message_Filtering_Service_NEW.Resources;
+using System.Diagnostics;
 
 namespace Napier_Bank_Message_Filtering_Service_NEW
 {
@@ -40,7 +41,6 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
             txt_output.IsReadOnly = true;
             ComponentsInit();
             Reset_layout();
-            
         }
 
         private void btn_create_Click(object sender, RoutedEventArgs e)

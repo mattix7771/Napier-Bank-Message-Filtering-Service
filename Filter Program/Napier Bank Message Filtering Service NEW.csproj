@@ -1,12 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <RootNamespace>Napier_Bank_Message_Filtering_Service_NEW</RootNamespace>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon />
+    <ApplicationIcon>NMS.ico</ApplicationIcon>
     <Win32Resource />
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <StartupObject />
+    <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
 
   <ItemGroup>

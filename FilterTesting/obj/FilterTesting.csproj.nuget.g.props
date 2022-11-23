@@ -25,8 +25,8 @@
   </ImportGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <Pkgxunit_analyzers Condition=" '$(Pkgxunit_analyzers)' == '' ">C:\Users\matti\.nuget\packages\xunit.analyzers\0.10.0</Pkgxunit_analyzers>
-    <PkgTestStack_White Condition=" '$(PkgTestStack_White)' == '' ">C:\Users\matti\.nuget\packages\teststack.white\0.13.3</PkgTestStack_White>
     <PkgNewtonsoft_Json Condition=" '$(PkgNewtonsoft_Json)' == '' ">C:\Users\matti\.nuget\packages\newtonsoft.json\9.0.1</PkgNewtonsoft_Json>
     <PkgMaterialDesignThemes Condition=" '$(PkgMaterialDesignThemes)' == '' ">C:\Users\matti\.nuget\packages\materialdesignthemes\4.6.1</PkgMaterialDesignThemes>
+    <PkgInterop_UIAutomationClient Condition=" '$(PkgInterop_UIAutomationClient)' == '' ">C:\Users\matti\.nuget\packages\interop.uiautomationclient\10.19041.0</PkgInterop_UIAutomationClient>
   </PropertyGroup>
 </Project>
