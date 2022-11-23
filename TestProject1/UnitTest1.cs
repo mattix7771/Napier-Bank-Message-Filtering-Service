@@ -1,32 +1,27 @@
-using System;
-using Xunit;
-using Napier_Bank_Message_Filtering_Service_NEW;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestStack.White;
 using TestStack.White.UIItems;
 using TestStack.White.Factory;
-using System.Threading;
 using TestStack.White.UIItems.Finders;
 
-namespace FilterTesting
+namespace TestProject1
 {
-    public class UnitTests
+    [TestClass]
+    public class UnitTest1
     {
-        [Fact]
-        public void Test1()
+        [TestMethod]
+        public void TestMethod1()
         {
             var app = Application.Launch("Napier Bank Message Filtering Service NEW.exe");
-            
+
             //Finds the main window (this and above line should be in [TestInitialize])
-            var window = app.GetWindow("MainWindow", InitializeOption.NoCache);
+            var window = app.GetWindow("MainWindow"); //, InitializeOption.NoCache
 
 
             //Thread.Sleep(5000);
             //Finds the button (see other Get...() methods for options)
-            var btnMyButton = (Button) window.Get<Button>(SearchCriteria.ByAutomationId("btn_create"));
-            var sendertextbox = (TextBox) window.Get(SearchCriteria.ByAutomationId("txt_sender"));
-
-            sendertextbox.Text = "34";
-            /*
+            var btnMyButton = window.Get<Button>(SearchCriteria.ByAutomationId("btn_create"));/*
+            var sendertextbox = window.Get(SearchCriteria.ByAutomationId("txt_sender"));
             var messagetextbox = window.Get(SearchCriteria.ByAutomationId("txt_messageSMS"));
             
             sendertextbox.Enter("12345678");
@@ -43,7 +38,6 @@ namespace FilterTesting
 
             //Close the main window and the app (preferably in [TestCleanup])
             app.Close();
-
         }
     }
 }
