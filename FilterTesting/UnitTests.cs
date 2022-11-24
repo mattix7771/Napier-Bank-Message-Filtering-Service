@@ -58,7 +58,7 @@ lbl_MentionsList
         */
 
         [Fact]
-        public void SMSTypeTest()
+        public void ASMSTypeTest()
         {
             //Get wanted elements
             var btn_create = mainWindow.FindFirstDescendant(cf.ByAutomationId("btn_create")).AsButton();
@@ -74,23 +74,12 @@ lbl_MentionsList
         }
 
         [Fact]
-        public void SMSBodyLenghtTest()
+        public void BSMSBodyLenghtTest()
         {
-            
-            var txt_phonenumber = mainWindow.FindFirstDescendant(cf.ByAutomationId("txt_phonenumber")).AsTextBox();
-            txt_phonenumber.Enter("777777");
-
-            ////Get wanted elements
-            //var btn_create = mainWindow.FindFirstDescendant(cf.ByAutomationId("btn_create")).AsButton();
-            //var txt_sender = mainWindow.FindFirstDescendant(cf.ByAutomationId("txt_sender")).AsTextBox();
-
-            ////Enter text and click button
-            //txt_sender.Enter("1234");
-            //btn_create.Click();
-
-            ////Check that correct textbox appears
-            //var txt_messageSMS = mainWindow.FindFirstDescendant(cf.ByAutomationId("txt_messageSMS")).AsTextBox();
-            //Assert.True(txt_messageSMS.IsAvailable);
+            //Check that user may only write 140 characters
+            var txt_messageSMS = mainWindow.FindFirstDescendant(cf.ByAutomationId("txt_messageSMS")).AsTextBox();
+            //Assert.Throws<System.InvalidOperationException>(() => 
+            txt_messageSMS.Enter("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
         }/*
 
         [Fact]
@@ -110,6 +99,22 @@ lbl_MentionsList
         }
 
         [Fact]
+        public void EmailSubjectLenghtTest()
+        {
+            //Check that user may only write 20 characters
+            var txt_subject = mainWindow.FindFirstDescendant(cf.ByAutomationId("txt_subject")).AsTextBox();
+            Assert.Throws<System.InvalidOperationException>(() => txt_subject.Enter("Lorem ipsum dolor sit amet, consectetur"));
+        }
+
+        [Fact]
+        public void EmailBodyLenghtTest()
+        {
+            //Check that user may only write 1048 characters
+            var txt_messageEmail = mainWindow.FindFirstDescendant(cf.ByAutomationId("txt_messageEmail")).AsTextBox();
+            Assert.Throws<System.InvalidOperationException>(() => txt_messageEmail.Enter("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."));
+        }
+
+        [Fact]
         public void TweetTypeTest()
         {
             //Get wanted elements
@@ -123,6 +128,22 @@ lbl_MentionsList
             //Check that correct textbox appears
             var txt_messageTwitter = mainWindow.FindFirstDescendant(cf.ByAutomationId("txt_messageTwitter")).AsTextBox();
             Assert.True(txt_messageTwitter.IsAvailable);
+        }
+
+        [Fact]
+        public void TwitterIDLenghtTest()
+        {
+            //Check that user may only write 20 characters
+            var txt_twitterID = mainWindow.FindFirstDescendant(cf.ByAutomationId("txt_twitterID")).AsTextBox();
+            Assert.Throws<System.InvalidOperationException>(() => txt_twitterID.Enter("Lorem ipsum dolor sit amet"));
+        }
+
+        [Fact]
+        public void TweetBodyLenghtTest()
+        {
+            //Check that user may only write 140 characters
+            var txt_messageTwitter = mainWindow.FindFirstDescendant(cf.ByAutomationId("txt_messageTwitter")).AsTextBox();
+            Assert.Throws<System.InvalidOperationException>(() => txt_messageTwitter.Enter("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."));
         }
 
         [Fact]
@@ -151,8 +172,8 @@ lbl_MentionsList
             var txt_SIRSortCode = mainWindow.FindFirstDescendant(cf.ByName("txt_SIRSortCode")).AsTextBox();
             check_SIR.Click();
             Assert.True(txt_SIRSortCode.IsAvailable);
-        }
-
+        }*/
+        /*
         [Fact]
         public void Test()
         {
