@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "UFmcVO5jsuT0GMV9fTF9fQKznKx9n64MD7CBnD5AZc8jsbstBPcighO89LmoWdfQGk1QbKilAkuA5wo6zvIBEA==",
+  "dgSpecHash": "mS9UimEuOQz7ZnKGZAjq4XkiLfsSAVdqOLy3bgzVZE3XyoFB9xKvqpHDSNKEkQz/vuBWXotp+vOlVj9hx33h7g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\matti\\OneDrive\\Napier\\S3 - Software Engineering\\Napier Bank Message Filtering Service NEW\\FilterTesting\\FilterTesting.csproj",
+  "projectFilePath": "C:\\Users\\matti\\source\\repos\\mattix7771\\Napier-Bank-Message-Filtering-Service\\FilterTesting\\FilterTesting.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\matti\\.nuget\\packages\\coverlet.collector\\3.0.2\\coverlet.collector.3.0.2.nupkg.sha512",
     "C:\\Users\\matti\\.nuget\\packages\\flaui.core\\4.0.0\\flaui.core.4.0.0.nupkg.sha512",
