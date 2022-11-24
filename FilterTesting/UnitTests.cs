@@ -65,13 +65,33 @@ lbl_MentionsList
             var txt_sender = mainWindow.FindFirstDescendant(cf.ByAutomationId("txt_sender")).AsTextBox();
 
             //Enter text and click button
-            txt_sender.Enter("1234");
+            txt_sender.Enter("123456789");
             btn_create.Click();
 
             //Check that correct textbox appears
             var txt_messageSMS = mainWindow.FindFirstDescendant(cf.ByAutomationId("txt_messageSMS")).AsTextBox();
             Assert.True(txt_messageSMS.IsAvailable);
         }
+
+        [Fact]
+        public void SMSBodyLenghtTest()
+        {
+            
+            var txt_phonenumber = mainWindow.FindFirstDescendant(cf.ByAutomationId("txt_phonenumber")).AsTextBox();
+            txt_phonenumber.Enter("777777");
+
+            ////Get wanted elements
+            //var btn_create = mainWindow.FindFirstDescendant(cf.ByAutomationId("btn_create")).AsButton();
+            //var txt_sender = mainWindow.FindFirstDescendant(cf.ByAutomationId("txt_sender")).AsTextBox();
+
+            ////Enter text and click button
+            //txt_sender.Enter("1234");
+            //btn_create.Click();
+
+            ////Check that correct textbox appears
+            //var txt_messageSMS = mainWindow.FindFirstDescendant(cf.ByAutomationId("txt_messageSMS")).AsTextBox();
+            //Assert.True(txt_messageSMS.IsAvailable);
+        }/*
 
         [Fact]
         public void EmailTypeTest()
@@ -124,9 +144,13 @@ lbl_MentionsList
         }
 
         [Fact]
-        public void Test()
+        public void SIRCheckBoxTest()
         {
-
+            //Check that SIR checkbox works properly
+            var check_SIR = mainWindow.FindFirstDescendant(cf.ByName("check_SIR")).AsCheckBox();
+            var txt_SIRSortCode = mainWindow.FindFirstDescendant(cf.ByName("txt_SIRSortCode")).AsTextBox();
+            check_SIR.Click();
+            Assert.True(txt_SIRSortCode.IsAvailable);
         }
 
         [Fact]
@@ -139,6 +163,6 @@ lbl_MentionsList
         public void Test()
         {
 
-        }
+        }*/
     }
 }
