@@ -87,8 +87,11 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
             string[] country_codes_array = Data.country_codes.Split("\n");
             foreach (string code in country_codes_array)
             {
-                cb_prefix.Items.Add(code.ToString());
-                country_codes.Add(code.Substring(0, code.IndexOf("   ")).Trim(), code.Substring(code.IndexOf("   ")).Trim());
+                String code_new = code;
+                if (code.Contains("\r"))
+                    code_new = code.Replace("\r", "");
+                cb_prefix.Items.Add(code_new.ToString());
+                country_codes.Add(code_new.Substring(0, code_new.IndexOf("   ")).Trim(), code_new.Substring(code_new.IndexOf("   ")).Trim());
             }
             cb_prefix.SelectedItem = cb_prefix.Items.GetItemAt(0);
 
@@ -127,7 +130,7 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
 
                 txt_output.Text += body;
             }
-            else if(type == "E")
+            else if(type == "E" || type == "R")
             {
                 String body = txt_messageEmail.Text;
 
@@ -138,8 +141,6 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
                         if (send)
                         {
                             quarantined_URLS.Add(x);
-                            //if (check_SIR.IsChecked == true)
-                            //    SIRReport = (new SIR('R', "R" + Create_ID(), txt_email.Text, txt_output.Text, txt_subject.Text, SIR_date.DisplayDate, txt_SIRSortCode.Text, cb_SIR_NOI.SelectedItem.ToString()));
                         }
                     }
                 txt_output.Text += body;
@@ -307,7 +308,7 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
             foreach (KeyValuePair<string, int> x in hashtags)
                 lb_TrendList.Items.Add(x);
 
-            if(SIRReport != null)
+            if (SIRReport.Id != null)
                 lb_SIRList.Items.Add("SIR ID: " + SIRReport.Id + "\n\t" + "Sender: " + SIRReport.Sender
                                                                 + "\n\t" + "Date: " + SIRReport.Sir_date
                                                                 + "\n\t" + "Sort code: " + SIRReport.Sort_code
@@ -458,7 +459,10 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
 
         private void txt_messageEmail_TextChanged(object sender, TextChangedEventArgs e) 
         {
-            Filter("E");
+            if (check_SIR.IsChecked == true)
+                Filter("R");
+            else
+                Filter("E");
         }
 
         private void txt_messageTwitter_TextChanged(object sender, TextChangedEventArgs e)

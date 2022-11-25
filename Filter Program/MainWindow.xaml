@@ -11,11 +11,11 @@
         <TabControl x:Name="tabs">
             <TabItem Header="Message Creation">
                 <Grid Background="#FFE5E5E5">
-                    <Label x:Name="lbl_sender" Content="Sender" HorizontalAlignment="Left" Margin="236,32,0,0" VerticalAlignment="Top" Width="61" Height="26" HorizontalContentAlignment="Center" FontWeight="Bold" Visibility="Visible"/>
-                    <TextBox x:Name="txt_sender" HorizontalAlignment="Left" Margin="305,29,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" Height="38" TextChanged="txt_sender_TextChanged"/>
-                    <Button x:Name="btn_create" Content="Create" HorizontalAlignment="Left" Margin="465,72,0,0" VerticalAlignment="Top" Click="btn_create_Click"/>
-                    <Label x:Name="lbl_preview" Content="Preview" HorizontalAlignment="Left" Margin="484,107,0,0" VerticalAlignment="Top" Width="61" Height="26" HorizontalContentAlignment="Center" FontWeight="Bold" Visibility="Visible"/>
-                    <TextBox x:Name="txt_output" HorizontalAlignment="Left" Margin="484,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="221" Height="106"/>
+                    <Label x:Name="lbl_sender" Content="Sender" HorizontalAlignment="Left" Margin="255,51,0,0" VerticalAlignment="Top" Width="61" Height="26" HorizontalContentAlignment="Center" FontWeight="Bold" Visibility="Visible"/>
+                    <TextBox x:Name="txt_sender" HorizontalAlignment="Left" Margin="324,48,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160" Height="38" TextChanged="txt_sender_TextChanged"/>
+                    <Button x:Name="btn_create" Content="Create" HorizontalAlignment="Left" Margin="484,91,0,0" VerticalAlignment="Top" Click="btn_create_Click"/>
+                    <Label x:Name="lbl_preview" Content="Preview" HorizontalAlignment="Left" Margin="484,146,0,0" VerticalAlignment="Top" Width="61" Height="26" HorizontalContentAlignment="Center" FontWeight="Bold" Visibility="Visible"/>
+                    <TextBox x:Name="txt_output" HorizontalAlignment="Left" Margin="484,175,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="221" Height="106"/>
                     <Button x:Name="btn_send" Content="Send" HorizontalAlignment="Left" Margin="648,290,0,0" VerticalAlignment="Top" Height="46" Width="101" Click="btn_send_Click"/>
                     <Label x:Name="lbl_phonenumber" Content="Phone Number" HorizontalAlignment="Left" Margin="15,98,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" FontWeight="Bold" Width="120" Height="26" VerticalContentAlignment="Center" Visibility="Hidden"/>
                     <ComboBox x:Name="cb_prefix" HorizontalAlignment="Left" Margin="140,98,0,0" VerticalAlignment="Top" Width="60" Height="26" Visibility="Hidden"/>
@@ -38,7 +38,8 @@
                     <Label x:Name="lbl_SIRSortCode" Content="Sort Code" HorizontalAlignment="Left" Margin="16,179,0,0" VerticalAlignment="Top" Width="119" Height="26" HorizontalContentAlignment="Center" FontWeight="Bold" Visibility="Hidden"/>
                     <Label x:Name="lbl_SIR_NOI" Content="Nature of Incident" HorizontalAlignment="Left" Margin="16,220,0,0" VerticalAlignment="Top" Width="119" Height="26" HorizontalContentAlignment="Center" FontWeight="Bold" Visibility="Hidden"/>
                     <ComboBox x:Name="cb_SIR_NOI" HorizontalAlignment="Left" Margin="140,219,0,0" VerticalAlignment="Top" Width="239" Height="26" Visibility="Hidden"/>
-                    <Button x:Name="btn_ReadFile" Content="Read File" HorizontalAlignment="Left" Margin="660,32,0,0" VerticalAlignment="Top" Click="btn_ReadFile_Click" Height="28" Width="76"/>
+                    <Button x:Name="btn_ReadFile" Content="Read File" HorizontalAlignment="Left" Margin="687,70,0,0" VerticalAlignment="Top" Click="btn_ReadFile_Click" Height="28" Width="76"/>
+                    <Label Content="Napier Messaging Bank - For manual look at README.md&#xD;&#xA;" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="14" FontWeight="Bold"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="tab_statistics" Header="Statistics">
