@@ -15,46 +15,6 @@ using System.Windows.Interop;
 
 namespace NBM_Testing
 {
-
-    /*
-lbl_sender
-txt_sender
-btn_create
-lbl_preview
-txt_output
-btn_preview
-btn_send
-lbl_phonenumber
-cb_prefix
-txt_phonenumber
-lbl_messageSMS
-txt_messageSMS
-lbl_email
-txt_email
-lbl_subject
-txt_subject
-lbl_messageEmail
-txt_messageEmail
-lbl_twitterID
-txt_twitterID
-lbl_messageTwitter
-txt_messageTwitter
-check_SIR
-SIR_date
-txt_SIRSortCode
-lbl_SIRSortCode
-lbl_SIR_NOI
-cb_SIR_NOI
-btn_ReadFile
-lb_TrendList
-lb_mentionList
-lb_SIRList
-lb_QuarantinedList
-lbl_TrendingList
-lbl_QuarantinedURLs
-lbl_SIRList
-lbl_MentionsList
-*/
     //UI TESTING
     [TestClass]
     public class UI
@@ -222,6 +182,7 @@ lbl_MentionsList
 
     }
 
+    //Message object testing
     [TestClass]
     public class Messages
     {
@@ -274,6 +235,7 @@ lbl_MentionsList
         }
     }
 
+    //Message filtering testing
     [TestClass]
     public class Filtering
     {
@@ -319,7 +281,7 @@ lbl_MentionsList
             btn_create.Click();
             var txt_messageTwitter = mainWindow.FindFirstDescendant(cf.ByAutomationId("txt_messageTwitter")).AsTextBox();
             txt_messageTwitter.Text = "hello, pls come AAP #me #you @where";
-            Assert.AreEqual(txt_output.Text, "hello, pls come AAP<Always a pleasure\r\n> #me #you @where");
+            Assert.AreEqual(txt_output.Text, "hello, pls come AAP<Always a pleasure\r> #me #you @where");
         }
     }
 }
