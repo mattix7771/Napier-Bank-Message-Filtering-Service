@@ -16,8 +16,7 @@
                     <Button x:Name="btn_create" Content="Create" HorizontalAlignment="Left" Margin="465,72,0,0" VerticalAlignment="Top" Click="btn_create_Click"/>
                     <Label x:Name="lbl_preview" Content="Preview" HorizontalAlignment="Left" Margin="484,107,0,0" VerticalAlignment="Top" Width="61" Height="26" HorizontalContentAlignment="Center" FontWeight="Bold" Visibility="Visible"/>
                     <TextBox x:Name="txt_output" HorizontalAlignment="Left" Margin="484,138,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="221" Height="106"/>
-                    <Button x:Name="btn_preview" Content="Preview" HorizontalAlignment="Left" Margin="330,348,0,0" VerticalAlignment="Top" Height="63" Width="110" Click="btn_preview_Click"/>
-                    <Button x:Name="btn_send" Content="Send" HorizontalAlignment="Left" Margin="649,361,0,0" VerticalAlignment="Top" Height="46" Width="101" Click="btn_send_Click"/>
+                    <Button x:Name="btn_send" Content="Send" HorizontalAlignment="Left" Margin="648,290,0,0" VerticalAlignment="Top" Height="46" Width="101" Click="btn_send_Click"/>
                     <Label x:Name="lbl_phonenumber" Content="Phone Number" HorizontalAlignment="Left" Margin="15,98,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" FontWeight="Bold" Width="120" Height="26" VerticalContentAlignment="Center" Visibility="Hidden"/>
                     <ComboBox x:Name="cb_prefix" HorizontalAlignment="Left" Margin="140,98,0,0" VerticalAlignment="Top" Width="60" Height="26" Visibility="Hidden"/>
                     <TextBox x:Name="txt_phonenumber" HorizontalAlignment="Left" Margin="200,98,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="180" Height="26" VerticalContentAlignment="Center" KeyDown="txt_sender_KeyDown" Visibility="Hidden"/>
@@ -39,7 +38,7 @@
                     <Label x:Name="lbl_SIRSortCode" Content="Sort Code" HorizontalAlignment="Left" Margin="16,179,0,0" VerticalAlignment="Top" Width="119" Height="26" HorizontalContentAlignment="Center" FontWeight="Bold" Visibility="Hidden"/>
                     <Label x:Name="lbl_SIR_NOI" Content="Nature of Incident" HorizontalAlignment="Left" Margin="16,220,0,0" VerticalAlignment="Top" Width="119" Height="26" HorizontalContentAlignment="Center" FontWeight="Bold" Visibility="Hidden"/>
                     <ComboBox x:Name="cb_SIR_NOI" HorizontalAlignment="Left" Margin="140,219,0,0" VerticalAlignment="Top" Width="239" Height="26" Visibility="Hidden"/>
-                    <Button x:Name="btn_ReadFile" Content="Read File" HorizontalAlignment="Left" Margin="622,39,0,0" VerticalAlignment="Top" Click="btn_ReadFile_Click"/>
+                    <Button x:Name="btn_ReadFile" Content="Read File" HorizontalAlignment="Left" Margin="660,32,0,0" VerticalAlignment="Top" Click="btn_ReadFile_Click" Height="28" Width="76"/>
                 </Grid>
             </TabItem>
             <TabItem x:Name="tab_statistics" Header="Statistics">

@@ -67,48 +67,16 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
             }
         }
 
-        private void btn_preview_Click(object sender, RoutedEventArgs e)
-        {
-            txt_output.Text = "";
-
-            //Text preview
-            if (txt_messageSMS.Visibility == Visibility.Visible)
-            {
-                txt_output.Text = "Sender: " + cb_prefix.Text.Substring(cb_prefix.Text.IndexOf('+') - 1) + " " + txt_phonenumber.Text + "\n";
-                Filter("S");
-            }
-            else if (txt_messageEmail.Visibility == Visibility.Visible)
-            {
-                //Check that email contains "@" to assure it's an email address
-                if (!txt_email.Text.Contains("@"))
-                {
-                    MessageBox.Show("Invalid email, try again");
-                    return;
-                }
-
-                Filter("E");
-            }
-            else if (txt_messageTwitter.Visibility == Visibility.Visible)
-            {
-                Filter("T");
-            }
-        }
-
         public void InitializeDictionary()
         {
             //Extract abbreviations from file
-
-            //C
             string[] data = Data.textwords.Split("\n");
 
-            foreach (var line in data)
+            foreach (string line in data)
             {
                 if (string.IsNullOrEmpty(line)) continue;
-                //string currentSplit = line);
                 string abbreviation = line.Substring(0, line.IndexOf(","));
                 string phrase = line.Substring(line.IndexOf(",") + 1);
-                Console.WriteLine("" +  abbreviation + " " +  phrase);
-
                 textwords.Add(abbreviation, phrase);
             }
         }
@@ -152,6 +120,8 @@ namespace Napier_Bank_Message_Filtering_Service_NEW
                     if (Regex.Match(body, @"\b" + entry.Key + @"\b", RegexOptions.IgnoreCase).Success)
                     {
                         body = Regex.Replace(body, @"\b" + entry.Key + @"\b", entry.Key + "<" + entry.Value + ">", RegexOptions.IgnoreCase);
+                        if (body.Contains("\r"))
+                            body = body.Replace("\r", "");
                     }
                 }
 
